@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:UrbanPark/features/work/screens/parking/widgets/selectslotspage.dart'; // Import SelectSlotPage
 
-class ParkingDetailPage extends StatelessWidget {
+class ParkingDetailPage extends StatefulWidget {
+  final String? title;
+  final String? details;
+
+  const ParkingDetailPage({super.key, this.title, this.details});
+  @override
+  _ParkingDetailPageState createState() => _ParkingDetailPageState();
+}
+
+class _ParkingDetailPageState extends State<ParkingDetailPage> {
+  int _slotsAvailable = 39; // Initial value, replace with actual fetched value
+  final List<String> availableSlots = ['A1', 'A2', 'B1', 'B2', 'C1']; // Example slots
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,24 +75,44 @@ class ParkingDetailPage extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    Text('39 slots available'),
+                    Text('Slots Available: $_slotsAvailable'),
                     Text('25.00 rupees per hour'),
                   ],
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SelectSlotPage()),
-                    );
+                    Get.to(() => SelectSlotPage(availableSlots: availableSlots)); // Navigate to SelectSlotPage with available slots
                   },
                   child: Text('Book Parking'),
                 ),
               ],
             ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _updateSlotsFromAPI(); // Update slots from API
+              },
+              child: Text('Update Slots'),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  void _updateSlotsFromAPI() {
+    // Simulate API call delay
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        // Simulate API response updating slot count
+        _slotsAvailable = _getUpdatedSlotCount();
+      });
+    });
+  }
+
+  // Replace with actual API integration logic
+  int _getUpdatedSlotCount() {
+    // Example: Replace with actual API call to get updated slot count
+    return 32; // Simulated updated value
   }
 }

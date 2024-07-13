@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'directscreen1.dart';
 
 class TicketScreen extends StatelessWidget {
   @override
@@ -49,6 +50,16 @@ class TicketScreen extends StatelessWidget {
                   Image.asset(
                     'assets/barcode.png',
                     height: 80,
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DirectionScreen1()),
+                      );
+                    },
+                    child: Text('Go to Direct Screen 1'),
                   ),
                 ],
               ),

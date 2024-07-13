@@ -1,4 +1,37 @@
+import 'package:UrbanPark/features/work/screens/parking/widgets/searchresults.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class CategoriesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Categories'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Get.back(); // Navigate back to previous screen using GetX
+              },
+              child: Text('Go Back'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Get.to(() => ExploreCategoriesPage()); // Navigate to ExploreCategoriesPage using GetX
+              },
+              child: Text('Explore Categories'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class ExploreCategoriesPage extends StatelessWidget {
   @override
@@ -9,7 +42,7 @@ class ExploreCategoriesPage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Get.back(); // Navigate back to previous screen using GetX
           },
         ),
       ),
@@ -78,6 +111,13 @@ class ExploreCategoriesPage extends StatelessWidget {
               title: Text('Northwest Hawwinton'),
               subtitle: Text('23 slots available'),
               trailing: Text('2 km'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Get.to(() => SearchResultsPage()); // Navigate to SearchResultsPage using GetX
+              },
+              child: Text('Go to Search Results'),
             ),
           ],
         ),

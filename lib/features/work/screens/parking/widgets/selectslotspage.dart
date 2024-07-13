@@ -1,7 +1,11 @@
-
 import 'package:flutter/material.dart';
+import 'package:UrbanPark/features/work/screens/parking/widgets/orderdetailpage.dart'; // Import OrderDetailsPage
 
 class SelectSlotPage extends StatelessWidget {
+  final List<String>? availableSlots;
+
+  SelectSlotPage({this.availableSlots});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,7 +14,7 @@ class SelectSlotPage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context); // Navigate back to ParkingDetailPage
           },
         ),
       ),
@@ -24,15 +28,29 @@ class SelectSlotPage extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Add your logic for selecting a parking slot here
+            ListView.builder(
+              itemCount: availableSlots?.length,
+              itemBuilder: (context, index) {
+                final slot = availableSlots?[index];
+                return ListTile(
+                  title: Text(slot!),
+                  onTap: () {
+                    _handleSlotSelection(slot, context);
+                  },
+                );
               },
-              child: Text('Select Slot'),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void _handleSlotSelection(String slot, BuildContext context) {
+    // Navigate to OrderDetailsPage and pass selected slot information
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => OrderDetailPage()),
     );
   }
 }

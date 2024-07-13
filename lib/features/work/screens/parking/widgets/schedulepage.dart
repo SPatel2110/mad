@@ -1,7 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:UrbanPark/features/work/screens/parking/widgets/paypage.dart'; // Assuming PayPage is imported
+import 'package:http/http.dart' as http; // Import for making HTTP requests
+import 'dart:convert'; // Import for handling JSON data
 
-class SchedulePage extends StatelessWidget {
+class SchedulePage extends StatefulWidget {
+  @override
+  _SchedulePageState createState() => _SchedulePageState();
+}
+
+class _SchedulePageState extends State<SchedulePage> {
+  double duration = 0;
+  bool isValetParking = false;
+  String vehicleInfo = '';
+  String parkingLot = '';
+  String totalAmount = '';
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch API data when the widget initializes
+    _fetchScheduleData();
+  }
+
+  Future<void> _fetchScheduleData() async {
+    // Replace this URL with your actual API endpoint
+    String apiUrl = 'https://api.example.com/schedule'; // Example API endpoint
+
+    try {
+      // Make GET request
+      var response = await http.get(Uri.parse(apiUrl));
+
+      // Check if the response is successful
+      if (response.statusCode == 200) {
+        // Parse JSON response
+        var data = json.decode(response.body);
+
+        // Update state with fetched data
+        setState(() {
+          duration = data['duration'];
+          isValetParking = data['is_valet_parking'];
+          vehicleInfo = data['vehicle_info'];
+          parkingLot = data['parking_lot'];
+          totalAmount = data['total_amount'];
+        });
+      } else {
+        // Handle error scenario
+        print('Failed to load schedule data: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle error scenario
+      print('Error fetching schedule data: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,19 +75,13 @@ class SchedulePage extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
-            CalendarDatePicker(
-              initialDate: DateTime.now(),
-              firstDate: DateTime(2020),
-              lastDate: DateTime(2030),
-              onDateChanged: (date) {
-                // Implement logic to handle selected date
-              },
-            ),
+            _buildScheduleDetails(),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PayPage()),
+                  MaterialPageRoute(builder: (context) => PayPage(totalAmount: '',)),
                 );
               },
               child: Text('Confirm Date'),
@@ -44,6 +89,23 @@ class SchedulePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildScheduleDetails() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Duration: ${duration.toInt()} hrs'),
+        SizedBox(height: 10),
+        Text('Valet Parking: ${isValetParking ? 'Enabled' : 'Disabled'}'),
+        SizedBox(height: 10),
+        Text('Vehicle: $vehicleInfo'),
+        SizedBox(height: 10),
+        Text('Parking Lot: $parkingLot'),
+        SizedBox(height: 10),
+        Text('Total Amount: $totalAmount'),
+      ],
     );
   }
 }

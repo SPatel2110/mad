@@ -1,20 +1,3 @@
-import 'package:UrbanPark/features/work/screens/parking/widgets/arrivalscreen.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/categoriespage.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/directscreen1.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/directscreen2.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/livedirectionscreen.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/onboardscreens2.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/orderdetailpage.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/parking_success_screen.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/parkingdetails.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/parkingmap.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/paypage.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/schedulepage.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/searchpage.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/selectslotspage.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/selectvehiclepage.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/sortpage.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/successscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -27,6 +10,7 @@ import 'features/personalization/screens/settings/settings.dart';
 import 'features/work/screens/home/home.dart';
 import 'features/work/screens/parking/widgets/onboarding_screen.dart';
 import 'features/work/screens/parking/widgets/notifications_page.dart';
+import 'features/work/screens/parking/widgets/searchresults.dart';
 
 class NavigationMenu extends StatelessWidget {
   const NavigationMenu({super.key});
@@ -51,41 +35,7 @@ class NavigationMenu extends StatelessWidget {
             NavigationDestination(
                 icon: Icon(Iconsax.trend_up), label: 'parking'),
             NavigationDestination(
-                icon: Icon(Iconsax.status), label: 'Notifications'),
-            NavigationDestination(
                 icon: Icon(Iconsax.user), label: 'User Profile'),
-            NavigationDestination(
-                icon: Icon(Iconsax.trend_up), label: 'parking'),
-            NavigationDestination(
-                icon: Icon(Iconsax.status), label: 'Notifications'),
-            NavigationDestination(
-                icon: Icon(Iconsax.user), label: 'User Profile'),
-            NavigationDestination(
-                icon: Icon(Iconsax.trend_up), label: 'parking'),
-            NavigationDestination(
-                icon: Icon(Iconsax.status), label: 'Notifications'),
-            NavigationDestination(
-                icon: Icon(Iconsax.user), label: 'User Profile'),
-            NavigationDestination(
-                icon: Icon(Iconsax.trend_up), label: 'parking'),
-            NavigationDestination(
-                icon: Icon(Iconsax.status), label: 'Notifications'),
-            NavigationDestination(
-                icon: Icon(Iconsax.user), label: 'User Profile'),
-            NavigationDestination(
-                icon: Icon(Iconsax.trend_up), label: 'parking'),
-            NavigationDestination(
-                icon: Icon(Iconsax.status), label: 'Notifications'),
-            NavigationDestination(
-                icon: Icon(Iconsax.user), label: 'User Profile'),
-            NavigationDestination(
-                icon: Icon(Iconsax.trend_up), label: 'parking'),
-            NavigationDestination(
-                icon: Icon(Iconsax.status), label: 'Notifications'),
-            NavigationDestination(
-                icon: Icon(Iconsax.user), label: 'User Profile'),
-            NavigationDestination(
-                icon: Icon(Iconsax.trend_up), label: 'parking'),
           ],
         ),
       ),
@@ -99,24 +49,7 @@ class NavigationController extends GetxController {
 
   final screens = [
     const HomeScreen(),
-    OnboardingScreens(),
-    SelectVehiclePage(),
-    SearchPage(),
-    ExploreCategoriesPage(),
-    SearchPage(),
-    SortByPage(),
-    ParkingMapPage(),
-    ParkingDetailPage(),
-    SelectSlotPage(),
-    OrderDetailPage(),
-    SchedulePage(),
-    PayPage(),
-    SuccessScreen(),
-    DirectionScreen1(),
-    DirectionScreen2(),
-    ArrivalScreen(),
-    LiveDirectionScreen(),
-    ParkingSuccessScreen(),
+    const OnboardingScreen(),
     const SettingsScreen(),
   ];
 }

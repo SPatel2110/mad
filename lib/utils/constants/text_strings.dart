@@ -7,18 +7,18 @@ class TTexts {
   static const String skip = "Skip";
   static const String done = "Done";
   static const String submit = "Submit";
-  static const String appName = "QuickPrep";
+  static const String appName = "UrbanPark";
   static const String tContinue = "Continue";
 
 
   // -- OnBoarding Texts
-  static const String onBoardingTitle1 = "Excel in Every Interview";
-  static const String onBoardingTitle2 = "Confidence Unleashed";
-  static const String onBoardingTitle3 = "Nail Every Question";
+  static const String onBoardingTitle1 = "Driving innovation in urban mobility excites me";
+  static const String onBoardingTitle2 = "I'm fueled by simplifying parking and improving cities";
+  static const String onBoardingTitle3 = "Smart parking solutions are my passion";
 
-  static const String onBoardingSubTitle1 = "QuickPrep - Comprehensive Prep for Your Big Day";
-  static const String onBoardingSubTitle2 = "QuickPrep - Tools to Ace Every Question";
-  static const String onBoardingSubTitle3 = "QuickPrep - Your Voice, Your Confidence";
+  static const String onBoardingSubTitle1 = "UrbanPark - Park Smarter, Not Harder";
+  static const String onBoardingSubTitle2 = "UrbanPark - Find Your Spot, Faster";
+  static const String onBoardingSubTitle3 = "UrbanPark - Simplify Your Parking Experience";
 
 
   // -- Authentication Forms
@@ -55,14 +55,14 @@ class TTexts {
   static const String confirmEmailSubTitle = "Congratulations! Your Account Awaits: Verify Your Email to Start Shopping and Experience a World of Unrivaled Deals and Personalized Offers.";
   static const String emailNotReceivedMessage = "Didn’t get the email? Check your junk/spam or resend it.";
   static const String yourAccountCreatedTitle = "Your account successfully created!";
-  static const String yourAccountCreatedSubTitle = "Welcome to Your Ultimate Shopping Destination: Your Account is Created, Unleash the Joy of Seamless Online Shopping!";
+  static const String yourAccountCreatedSubTitle = "Welcome to Your Ultimate Parking Destination: Your Account is Created, Park with Ease, Anywhere!";
 
 
   // -- Product
-  static const String popularProducts = "Popular Products";
+  static const String popularProducts = "Book Parking";
 
   // -- Home
-  static const String homeAppbarTitle = "Good day for learning";
+  static const String homeAppbarTitle = "Find and reserve parking in the city";
   static const String homeAppbarSubTitle = "Taimoor Sikander";
 
 

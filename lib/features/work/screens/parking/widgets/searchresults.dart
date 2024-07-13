@@ -1,4 +1,6 @@
+import 'package:UrbanPark/features/work/screens/parking/widgets/sortpage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SearchResultsPage extends StatelessWidget {
   @override
@@ -9,7 +11,7 @@ class SearchResultsPage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Get.back(); // Navigate back to ExploreCategoriesPage using GetX
           },
         ),
       ),
@@ -59,7 +61,17 @@ class SearchResultsPage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                // Navigate to SortByPage using GetX
+                Get.to(() => SortByPage());
+              },
+              child: Text("Sort Results"),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Handle the case when the user didn't find what they need
+              },
               child: Text("Didn't find what you need?"),
             ),
           ],

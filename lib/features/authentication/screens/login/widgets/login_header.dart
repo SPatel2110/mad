@@ -28,7 +28,7 @@ class TLoginHeader extends StatelessWidget {
         const SizedBox(
           height: TSizes.spaceBtwSections,
         ),
-      Text('QuickPrep', style: Theme.of(context).textTheme.headlineLarge!.apply(color: Colors.white),maxLines:1,overflow: TextOverflow.ellipsis,),
+      Text('UrbanPark', style: Theme.of(context).textTheme.headlineLarge!.apply(color: Colors.white),maxLines:1,overflow: TextOverflow.ellipsis,),
         const SizedBox(
           height: TSizes.sm,
         ),

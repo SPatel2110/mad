@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 
+import 'parking_success_screen.dart';
+
 class ArrivalScreen extends StatelessWidget {
+  final String? vehicleInfo;
+  final String? duration;
+  final String? parkingLot;
+
+  ArrivalScreen({
+    this.vehicleInfo,
+    this.duration,
+    this.parkingLot,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +54,7 @@ class ArrivalScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('VEHICLE'),
-                      Text('2021 Audi Q3 • B 1234 CD'),
+                      Text(vehicleInfo!),
                     ],
                   ),
                   SizedBox(height: 10),
@@ -50,7 +62,7 @@ class ArrivalScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('DURATION'),
-                      Text('4 hours • 24 Sep. 2024'),
+                      Text(duration!),
                     ],
                   ),
                   SizedBox(height: 20),
@@ -62,6 +74,16 @@ class ArrivalScreen extends StatelessWidget {
                   Image.asset(
                     'assets/barcode.png',
                     height: 80,
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ParkingSuccessScreen()),
+                      );
+                    },
+                    child: Text('Scan Complete'),
                   ),
                 ],
               ),

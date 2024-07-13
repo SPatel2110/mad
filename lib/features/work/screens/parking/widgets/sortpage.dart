@@ -1,6 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'categoriespage.dart';
+import 'filterpage.dart';
 
-class SortByPage extends StatelessWidget {
+enum SortOption {
+  Distance,
+  SlotsAvailable,
+}
+
+class SortByPage extends StatefulWidget {
+  @override
+  _SortByPageState createState() => _SortByPageState();
+}
+
+class _SortByPageState extends State<SortByPage> {
+  SortOption _sortOption = SortOption.Distance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,7 +24,7 @@ class SortByPage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Get.back(); // Navigate back to SearchResultsPage using GetX
           },
         ),
       ),
@@ -24,23 +39,67 @@ class SortByPage extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
-            CheckboxListTile(
-              title: Text('Distance'),
-              value: true, // Replace with your logic for handling checked state
-              onChanged: (value) {
-                // Add your logic for handling onChanged
+            buildSortOption(SortOption.Distance, 'Distance'),
+            buildSortOption(SortOption.SlotsAvailable, 'Slots Available'),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Get.back(); // Navigate back to SearchResultsPage using GetX
               },
+              child: Text('Back to Search Results'),
             ),
-            CheckboxListTile(
-              title: Text('Slots available'),
-              value: true, // Replace with your logic for handling checked state
-              onChanged: (value) {
-                // Add your logic for handling onChanged
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Get.offAll(() => ExploreCategoriesPage()); // Navigate to ExploreCategoriesPage using GetX
               },
+              child: Text('Back to Categories'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Get.to(() => FilterPage()); // Navigate to FilterPage using GetX
+              },
+              child: Text('Go to Filter Page'),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Widget buildSortOption(SortOption option, String title) {
+    return ListTile(
+      title: Text(title),
+      leading: Radio<SortOption>(
+        value: option,
+        groupValue: _sortOption,
+        onChanged: (SortOption? value) {
+          setState(() {
+            _sortOption = value!;
+            // Implement your sorting logic based on _sortOption
+            switch (_sortOption) {
+              case SortOption.Distance:
+                sortByDistance();
+                break;
+              case SortOption.SlotsAvailable:
+                sortBySlotsAvailable();
+                break;
+            }
+          });
+        },
+      ),
+    );
+  }
+
+  void sortByDistance() {
+    // Implement sorting by distance logic
+    print('Sorting by Distance');
+    // Example: Call a function or set a flag for sorting by distance
+  }
+
+  void sortBySlotsAvailable() {
+    // Implement sorting by slots available logic
+    print('Sorting by Slots Available');
+    // Example: Call a function or set a flag for sorting by available slots
   }
 }

@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
+import 'ticketscreen.dart'; // Import TicketPage
 
 class SuccessScreen extends StatelessWidget {
+  const SuccessScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue,
-      child: Center(
+    // Navigate to TicketPage after 2 seconds delay
+    Future.delayed(Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => TicketScreen()),
+      );
+    });
+
+    return Scaffold(
+      backgroundColor: Colors.blue,
+      appBar: AppBar(
+        title: Text('Payment Success'),
+        automaticallyImplyLeading: false, // Disable back button
+      ),
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -17,7 +32,7 @@ class SuccessScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'Yey, 1 parking slot\nalready booked for you.',
+              'Yay, 1 parking slot\nalready booked for you.',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: Colors.white),
             ),

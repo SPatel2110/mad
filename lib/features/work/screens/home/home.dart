@@ -10,6 +10,7 @@ import '../../../../common/widgets/text/section_heading.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../personalization/controllers/user_controller.dart';
+import '../parking/widgets/onboarding_screen.dart';
 import 'widgets/home_appbar.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -37,16 +38,20 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Obx(() {
-                          return Text('Hello ${controller.user.value.firstName ?? ''} , 👋', style: Theme.of(context).textTheme.headlineLarge!.apply(color: Colors.black),maxLines:1,overflow: TextOverflow.ellipsis,);
+                          return Text(
+                            'Hello ${controller.user.value.firstName ?? ''} , 👋',
+                            style: Theme.of(context).textTheme.headlineLarge!.apply(color: Colors.black),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          );
                         }),
-
-                        const SizedBox(
-                          height: TSizes.spaceBtwItems,
+                        const SizedBox(height: TSizes.spaceBtwItems),
+                        Text(
+                          'Welcome to UrbanPark',
+                          style: Theme.of(context).textTheme.headlineMedium!.apply(color: Colors.white),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        /// Scrollable categories
-
-             Text('Welcome to UrbanPark   ', style: Theme.of(context).textTheme.headlineMedium!.apply(color: Colors.white),maxLines:1,overflow: TextOverflow.ellipsis,),
-
                         const SizedBox(height: TSizes.spaceBtwSections * 2),
                       ],
                     ),
@@ -59,18 +64,30 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.all(TSizes.defaultSpace),
               child: Column(
                 children: [
-                  const PromoSlider(banners: [TImages.promoBanner1, TImages.promoBanner2, TImages.promoBanner3, TImages.promoBanner4]),
+                  const PromoSlider(
+                    banners: [
+                      TImages.promoBanner1,
+                      TImages.promoBanner2,
+                      TImages.promoBanner3,
+                      TImages.promoBanner4
+                    ],
+                  ),
                   const SizedBox(height: TSizes.spaceBtwSections),
                   /// Heading
                   TSectionHeading(
-                    title: 'Explore ',
-                    onPressed: () {},
+                    title: 'Book Parking',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => OnboardingScreen()),
+                      );
+                    },
                   ),
                   const SizedBox(height: TSizes.spaceBtwItems),
                   /// Grid
                   TGridLayout(
                     itemCount: 4,
-                    itemBuilder: (_, index) => const ProductCardVertical(),
+                    itemBuilder: (_, index) => OnboardingScreen(),
                   ),
                 ],
               ),
