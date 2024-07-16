@@ -46,7 +46,7 @@ class TImages {
   static const String successRegistration = "assets/images/animations/72462-check-register.json";
 
   // -- OnBoarding Texts
-  static const String onBoardingImage1 = "assets/images/on_boarding_images/interview-1.gif";
+  static const String onBoardingImage1 = "C:\Users\Shashank\OneDrive\Documents\GitHub\mad\assets\images\on_boarding_images\img.gif";
   static const String onBoardingImage2 = "assets/images/on_boarding_images/interview-2.gif";
   static const String onBoardingImage3 = "assets/images/on_boarding_images/interview-3.gif";
 

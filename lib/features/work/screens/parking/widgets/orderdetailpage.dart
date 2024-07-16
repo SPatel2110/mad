@@ -4,7 +4,7 @@ import 'dart:convert'; // Import for handling JSON data
 import 'package:http/http.dart' as http; // Import for making HTTP requests
 
 class OrderDetailPage extends StatefulWidget {
-  const OrderDetailPage({Key? key}) : super(key: key);
+  const OrderDetailPage({Key? key, required String selectedSlot}) : super(key: key);
 
   @override
   _OrderDetailPageState createState() => _OrderDetailPageState();

@@ -32,7 +32,7 @@ class _ParkingDetailPageState extends State<ParkingDetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'PARKING DETAIL',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
@@ -42,12 +42,12 @@ class _ParkingDetailPageState extends State<ParkingDetailPage> {
               fit: BoxFit.cover,
             ),
             SizedBox(height: 10),
-            Text(
+            const Text(
               'Parking Lot of Capital University',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             Text('1514 Robin St, Auburndale'),
-            Row(
+            const Row(
               children: [
                 Icon(Icons.map),
                 Text('10 km²'),
@@ -60,11 +60,11 @@ class _ParkingDetailPageState extends State<ParkingDetailPage> {
               ],
             ),
             SizedBox(height: 10),
-            Text(
+            const Text(
               'RULES',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            Text(
+            const Text(
               'These rules and regulations for the use of Dummy University Parking Area. In these Rules, unless the context otherwise requires more...',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -76,12 +76,12 @@ class _ParkingDetailPageState extends State<ParkingDetailPage> {
                 Column(
                   children: [
                     Text('Slots Available: $_slotsAvailable'),
-                    Text('25.00 rupees per hour'),
+                    const Text('25.00 rupees per hour'),
                   ],
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Get.to(() => SelectSlotPage(availableSlots: availableSlots)); // Navigate to SelectSlotPage with available slots
+                    Get.to(() => SelectSlotPage(availableSlots: availableSlots, bookedSlots: [],)); // Navigate to SelectSlotPage with available slots
                   },
                   child: Text('Book Parking'),
                 ),
