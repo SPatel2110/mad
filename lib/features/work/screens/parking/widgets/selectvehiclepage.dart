@@ -1,7 +1,8 @@
-import 'package:UrbanPark/features/work/screens/parking/widgets/selectslotspage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/searchpage.dart'; // Replace with correct import path for SearchPage // Import SelectSlotPage
+import 'package:UrbanPark/features/work/screens/parking/widgets/selectslotspage.dart';
+import 'package:UrbanPark/features/work/screens/parking/widgets/searchpage.dart';
+import 'package:UrbanPark/features/work/screens/parking/widgets/ticketscreen.dart'; // Import TicketScreen
 import '../../../../../common/widgets/custom_shapes/containers/primary_header_container.dart';
 import '../../../../../common/widgets/text/section_heading.dart';
 import '../../../../../utils/constants/sizes.dart';
@@ -195,10 +196,20 @@ class _SelectVehiclePageState extends State<SelectVehiclePage> {
       // Navigate to SelectSlotPage with selected vehicle and destination details
       Get.to(() =>
           SelectSlotPage(
-        selectedVehicle: '',
-        destinationName: result, bookedSlots: [],
-      ));
+            selectedVehicle: vehicle.name,
+            destinationName: result,
+            bookedSlots: [],
+          ));
     }
+  }
+
+  void _navigateToTicketScreen(String duration, String vehicle) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TicketScreen(duration: duration, vehicle: vehicle),
+      ),
+    );
   }
 }
 

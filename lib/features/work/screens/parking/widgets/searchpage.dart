@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:speech_to_text/speech_to_text.dart' as stt;
-
+import 'package:speech_to_text/speech_to_text.dart' as stt; // Import DirectionScreen1
+import 'directscreen1.dart';
 import 'selectvehiclepage.dart'; // Replace with your VehiclePage import
 import 'sortpage.dart'; // Import your SortPage here
 import 'parkingdetails.dart'; // Import your ParkingDetailPage here
@@ -101,12 +101,13 @@ class _SearchPageState extends State<SearchPage> {
             snippet: destination.snippet,
           ),
           onTap: () {
-            // Navigate to ParkingDetailPage with destination details
-            Get.to(() => ParkingDetailPage(
-              destinationName: destination.name,
-              distance: _calculateDistance(destination.location),
-              availableSlots: destination.availableSlots,
-            ));
+            // Navigate to DirectionScreen1 with destination details
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DirectionScreen1(destination: destination.location),
+              ),
+            );
           },
         ),
       );

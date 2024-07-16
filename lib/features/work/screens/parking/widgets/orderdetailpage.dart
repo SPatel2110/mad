@@ -1,7 +1,8 @@
+import 'package:UrbanPark/features/work/screens/parking/widgets/ticketscreen.dart';
 import 'package:flutter/material.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/schedulepage.dart'; // Assuming SchedulePage is imported
-import 'dart:convert'; // Import for handling JSON data
 import 'package:http/http.dart' as http; // Import for making HTTP requests
+import 'dart:convert'; // Import for handling JSON data
+import 'package:UrbanPark/features/work/screens/parking/widgets/schedulepage.dart'; // Assuming SchedulePage is imported
 
 class OrderDetailPage extends StatefulWidget {
   final String selectedSlot;
@@ -170,11 +171,14 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   Widget _buildConfirmButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        // Pass data to SchedulePage
+        // Navigate to TicketScreen with the provided details
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SchedulePage(),
+            builder: (context) => TicketScreen(
+              duration: '${_selectedDuration.toInt()} hours',
+              vehicle: widget.vehicleName,
+            ),
           ),
         );
       },

@@ -33,7 +33,7 @@ class _SortByPageState extends State<SortByPage> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.blue.shade900, // Dark background color for the container
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           boxShadow: [
             BoxShadow(
@@ -57,7 +57,7 @@ class _SortByPageState extends State<SortByPage> {
                   children: [
                     Text(
                       'SORT BY',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                     SizedBox(height: 16),
                     buildSortOption(SortOption.Distance, 'Distance'),
@@ -100,7 +100,7 @@ class _SortByPageState extends State<SortByPage> {
 
   Widget buildSortOption(SortOption option, String title) {
     return ListTile(
-      title: Text(title),
+      title: Text(title, style: TextStyle(color: Colors.white)), // White text color for dark background
       leading: Radio<SortOption>(
         value: option,
         groupValue: _sortOption,
@@ -117,6 +117,7 @@ class _SortByPageState extends State<SortByPage> {
             }
           });
         },
+        activeColor: Colors.white, // White radio button color for dark background
       ),
     );
   }
