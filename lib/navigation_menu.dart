@@ -1,3 +1,4 @@
+import 'package:UrbanPark/features/work/screens/parking/widgets/parkingdetails.dart';
 import 'package:UrbanPark/features/work/screens/parking/widgets/selectslotspage.dart';
 import 'package:UrbanPark/features/work/screens/parking/widgets/selectvehiclepage.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,8 @@ class NavigationMenu extends StatelessWidget {
                 icon: Icon(Iconsax.home), label: 'Home'),
             NavigationDestination(
                 icon: Icon(Iconsax.trend_up), label: 'parking'),
+            NavigationDestination(
+                icon: Icon(Iconsax.user), label: 'User Profile'),
             NavigationDestination(
                 icon: Icon(Iconsax.user), label: 'User Profile'),
           ],

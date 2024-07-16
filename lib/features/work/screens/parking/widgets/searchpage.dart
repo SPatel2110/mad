@@ -51,7 +51,7 @@ class _SearchPageState extends State<SearchPage> {
     ParkingDestination(
       name: 'Mantri Square Parking',
       location: LatLng(12.9911, 77.5702),
-      snippet: 'Near Mantri Square Mall',
+      snippet: 'Near Mantr i Square Mall',
       availableSlots: 50,
     ),
     // Add more parking destinations as needed
