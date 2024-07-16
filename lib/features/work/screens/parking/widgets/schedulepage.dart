@@ -65,47 +65,65 @@ class _SchedulePageState extends State<SchedulePage> {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(
-              'SCHEDULE',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      body: Stack(
+        children: [
+          // Background image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/home_background.jpg',
+              fit: BoxFit.cover,
             ),
-            SizedBox(height: 20),
-            _buildScheduleDetails(),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PayPage(totalAmount: '',)),
-                );
-              },
-              child: Text('Confirm Date'),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'SCHEDULE',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                SizedBox(height: 20),
+                _buildScheduleDetails(),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PayPage(totalAmount: totalAmount)),
+                    );
+                  },
+                  child: Text('Confirm Date'),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildScheduleDetails() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Duration: ${duration.toInt()} hrs'),
-        SizedBox(height: 10),
-        Text('Valet Parking: ${isValetParking ? 'Enabled' : 'Disabled'}'),
-        SizedBox(height: 10),
-        Text('Vehicle: $vehicleInfo'),
-        SizedBox(height: 10),
-        Text('Parking Lot: $parkingLot'),
-        SizedBox(height: 10),
-        Text('Total Amount: $totalAmount'),
-      ],
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Duration: ${duration.toInt()} hrs'),
+          SizedBox(height: 10),
+          Text('Valet Parking: ${isValetParking ? 'Enabled' : 'Disabled'}'),
+          SizedBox(height: 10),
+          Text('Vehicle: $vehicleInfo'),
+          SizedBox(height: 10),
+          Text('Parking Lot: $parkingLot'),
+          SizedBox(height: 10),
+          Text('Total Amount: $totalAmount'),
+        ],
+      ),
     );
   }
 }

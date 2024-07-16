@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart'; // Import Razorpay package
-import 'successscreen.dart';// Import SuccessScreen
+import 'successscreen.dart'; // Import SuccessScreen
 
 class PayPage extends StatefulWidget {
   final String totalAmount;
@@ -73,7 +73,7 @@ class _PayPageState extends State<PayPage> {
 
   void _openCheckout() {
     var options = {
-      'key': 'YOUR_RAZORPAY_API_KEY', // Replace with your Razorpay API key
+      'key': 'YOUR_TEST_API_KEY', // Replace with your Razorpay Test API key
       'amount': _calculateAmountInPaisa(), // Example: amount in the smallest currency unit (in paisa)
       'name': 'UrbanPark',
       'description': 'Parking Payment',
@@ -108,7 +108,7 @@ class _PayPageState extends State<PayPage> {
   int _calculateAmountInPaisa() {
     // Convert totalAmount string to paisa (assuming it's in rupees format like '100 Rupees.00')
     try {
-      double rupees = double.parse(widget.totalAmount!.split(' ')[0]);
+      double rupees = double.parse(widget.totalAmount.split(' ')[0]);
       int paisa = (rupees * 100).round();
       return paisa;
     } catch (e) {
@@ -124,35 +124,46 @@ class _PayPageState extends State<PayPage> {
         title: Text('Pay'),
         automaticallyImplyLeading: false, // Disable back button
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Pay',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      body: Stack(
+        children: [
+          // Background image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/home_background.jpg',
+              fit: BoxFit.cover,
             ),
-            SizedBox(height: 20),
-            Card(
-              elevation: 5,
-              child: ListTile(
-                leading: Icon(Icons.credit_card),
-                title: Text('Visa **** 6478'),
-                subtitle: Text('Alexander Smith'),
-                trailing: Icon(Icons.more_vert),
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Pay',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                SizedBox(height: 20),
+                Card(
+                  elevation: 5,
+                  child: ListTile(
+                    leading: Icon(Icons.credit_card),
+                    title: Text('Visa **** 6478'),
+                    subtitle: Text('Alexander Smith'),
+                    trailing: Icon(Icons.more_vert),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text('TOTAL', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                Text(widget.totalAmount, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)), // Display total amount dynamically
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _openCheckout,
+                  child: Text('Pay'),
+                ),
+              ],
             ),
-            SizedBox(height: 20),
-            Text('TOTAL'),
-            Text(widget.totalAmount), // Display total amount dynamically
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _openCheckout,
-              child: Text('Pay'),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:UrbanPark/features/work/screens/parking/widgets/selectvehiclepage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:UrbanPark/features/work/screens/parking/widgets/orderdetailpage.dart'; // Import OrderDetailsPage
@@ -9,7 +10,7 @@ class SelectSlotPage extends StatefulWidget {
   final List<String>? availableSlots;
   final List<String> bookedSlots;
 
-  SelectSlotPage({this.availableSlots, required this.bookedSlots});
+  SelectSlotPage({this.availableSlots, required this.bookedSlots, required String selectedVehicle, required String destinationName});
 
   @override
   _SelectSlotPageState createState() => _SelectSlotPageState();
@@ -78,23 +79,23 @@ class _SelectSlotPageState extends State<SelectSlotPage> {
                     ),
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: widget.availableSlots?.length?? 0,
+                    itemCount: widget.availableSlots?.length ?? 0,
                     itemBuilder: (context, index) {
                       final slot = widget.availableSlots?[index];
                       final isBooked = bookedSlots.contains(slot);
+                      final isSelected = selectedSlot == slot;
 
                       return GestureDetector(
-                        onTap: isBooked? null : () {
+                        onTap: isBooked ? null : () {
                           setState(() {
                             selectedSlot = slot;
                           });
-                          _handleSlotSelection(slot!, context);
                         },
                         child: Container(
                           width: 100,
                           height: 50,
                           decoration: BoxDecoration(
-                            color: isBooked? Colors.redAccent : Colors.white,
+                            color: isBooked ? Colors.redAccent : (isSelected ? Colors.blue : Colors.white),
                             borderRadius: BorderRadius.circular(8),
                             boxShadow: [
                               BoxShadow(
@@ -104,7 +105,7 @@ class _SelectSlotPageState extends State<SelectSlotPage> {
                               ),
                             ],
                             border: Border.all(
-                              color: selectedSlot == slot? Colors.blue : Colors.transparent,
+                              color: isSelected ? Colors.blue : Colors.transparent,
                               width: 2,
                             ),
                           ),
@@ -112,7 +113,7 @@ class _SelectSlotPageState extends State<SelectSlotPage> {
                             child: Text(
                               slot!,
                               style: TextStyle(
-                                color: Colors.black,
+                                color: isBooked ? Colors.white : (isSelected ? Colors.white : Colors.black),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
@@ -124,7 +125,7 @@ class _SelectSlotPageState extends State<SelectSlotPage> {
                   ),
                   const SizedBox(height: TSizes.spaceBtwItems),
                   ElevatedButton(
-                    onPressed: selectedSlot == null? null : () {
+                    onPressed: selectedSlot == null || bookedSlots.contains(selectedSlot) ? null : () {
                       _handleSlotSelection(selectedSlot!, context);
                     },
                     child: Text('Continue'),
@@ -142,7 +143,7 @@ class _SelectSlotPageState extends State<SelectSlotPage> {
     // Navigate to OrderDetailsPage and pass selected slot information
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => OrderDetailPage(selectedSlot: slot)),
+      MaterialPageRoute(builder: (context) => OrderDetailPage(selectedSlot: slot, vehicleName: '', destination: '', isCar: false,)),
     );
 
     // If payment was successful, mark the slot as booked

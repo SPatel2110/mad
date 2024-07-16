@@ -1,4 +1,5 @@
 import 'package:UrbanPark/features/work/screens/parking/widgets/selectslotspage.dart';
+import 'package:UrbanPark/features/work/screens/parking/widgets/selectvehiclepage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -50,7 +51,7 @@ class NavigationController extends GetxController {
 
   final screens = [
     const HomeScreen(),
-    SelectSlotPage(bookedSlots: [],),
+    SelectVehiclePage(),
     const SettingsScreen(),
   ];
 }

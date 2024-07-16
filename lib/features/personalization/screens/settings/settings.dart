@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:UrbanPark/data/repositories/authentication/authentication_repository.dart';
 import 'package:UrbanPark/features/authentication/screens/login/login.dart';
@@ -14,15 +13,17 @@ import '../../../../common/widgets/text/section_heading.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
+import '../../../work/screens/parking/widgets/notifications_page.dart';
 import '../address/address.dart';
-import '../profile/profile.dart';
+import '../profile/profile.dart'; // Import NotificationsPage
 
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
+  const SettingsScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
     final controller = UserController.instance;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -41,7 +42,11 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const TCircularImage(
-                        image: TImages.user, width: 50, height: 50, padding: 0),
+                      image: TImages.user,
+                      width: 50,
+                      height: 50,
+                      padding: 0,
+                    ),
                     title: Text(
                       controller.user.value.fullName,
                       style: Theme.of(context)
@@ -57,7 +62,7 @@ class SettingsScreen extends StatelessWidget {
                           .apply(color: TColors.white),
                     ),
                     trailing: IconButton(
-                      onPressed: () => Get.to(()=>const ProfileScreen()),
+                      onPressed: () => Get.to(() => const ProfileScreen()),
                       icon: const Icon(Iconsax.edit, color: TColors.white),
                     ),
                   ),
@@ -65,40 +70,52 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
             ),
-
-             Padding(
+            Padding(
               padding: EdgeInsets.all(TSizes.defaultSpace),
               child: Column(
                 children: [
-                  TSectionHeading(title: "Account Settings", showActionButton: false),
+                  TSectionHeading(
+                      title: "Account Settings", showActionButton: false),
                   SizedBox(height: TSizes.spaceBtwItems),
-
                   TSettingsMenuTile(
-                      icon: Iconsax.notification, title: "Notifications", subTitle: "Set any kind of notification messages"),
+                    icon: Iconsax.notification,
+                    title: "Notifications",
+                    subTitle: "Set any kind of notification messages",
+                    onTap: () {
+                      // Navigate to NotificationsPage
+                      Get.to(() => NotificationsPage());
+                    },
+                  ),
                   TSettingsMenuTile(
-                      icon: Iconsax.security_card, title: "Account Privacy", subTitle: "Manage data usage and connected accounts"),
+                    icon: Iconsax.security_card,
+                    title: "Account Privacy",
+                    subTitle: "Manage data usage and connected accounts",
+                  ),
                   SizedBox(height: TSizes.spaceBtwSections),
                   TSectionHeading(title: "App Settings!", showActionButton: false),
                   SizedBox(height: TSizes.spaceBtwItems),
                   TSettingsMenuTile(
-                      icon: Iconsax.document_upload, title: "Load Data", subTitle: "Upload Data to your Cloud Firebase"),
+                    icon: Iconsax.document_upload,
+                    title: "Load Data",
+                    subTitle: "Upload Data to your Cloud Firebase",
+                  ),
 
-
-                    ///logout
-                    const SizedBox(height: TSizes.spaceBtwSections),
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton (onPressed: ()=>AuthenticationRepository.instance.logout(), child: const Text('Logout')),
-                    ),
-                    const SizedBox (height: TSizes.spaceBtwSections * 2.5),
-                    ],
+                  ///logout
+                  const SizedBox(height: TSizes.spaceBtwSections),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                        onPressed: () =>
+                            AuthenticationRepository.instance.logout(),
+                        child: const Text('Logout')),
+                  ),
+                  const SizedBox(height: TSizes.spaceBtwSections * 2.5),
+                ],
               ),
             )
-
           ],
         ),
       ),
     );
   }
 }
-

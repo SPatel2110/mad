@@ -4,7 +4,18 @@ import 'dart:convert'; // Import for handling JSON data
 import 'package:http/http.dart' as http; // Import for making HTTP requests
 
 class OrderDetailPage extends StatefulWidget {
-  const OrderDetailPage({Key? key, required String selectedSlot}) : super(key: key);
+  final String selectedSlot;
+  final String vehicleName;
+  final String destination;
+  final bool isCar; // Indicates if the selected vehicle is a car
+
+  const OrderDetailPage({
+    Key? key,
+    required this.selectedSlot,
+    required this.vehicleName,
+    required this.destination,
+    required this.isCar,
+  }) : super(key: key);
 
   @override
   _OrderDetailPageState createState() => _OrderDetailPageState();
@@ -25,7 +36,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   }
 
   Future<void> _fetchOrderDetails() async {
-    String apiUrl = 'https://api.example.com/order_details'; // Example API endpoint
+    // Example API endpoint
+    String apiUrl = 'https://api.example.com/order_details';
 
     try {
       var response = await http.get(Uri.parse(apiUrl));
@@ -36,7 +48,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         setState(() {
           _vehicleInfo = data['vehicle_info'];
           _parkingLot = data['parking_lot'];
-          _totalAmount = data['total_amount'];
+          _totalAmount = _calculateTotalAmount().toString();
         });
       } else {
         // Handle error scenario
@@ -46,6 +58,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       // Handle error scenario
       print('Error fetching order details: $e');
     }
+  }
+
+  double _calculateTotalAmount() {
+    double baseAmount = widget.isCar ? 100.0 : 50.0; // Default amount for cars and bikes/scooters
+    // Additional logic can be added here based on duration, valet parking, etc.
+    return baseAmount;
   }
 
   @override
@@ -124,7 +142,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Vehicle'),
-        Text(_vehicleInfo),
+        Text(widget.vehicleName),
       ],
     );
   }
@@ -134,7 +152,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Parking Lot'),
-        Text(_parkingLot),
+        Text(widget.destination),
       ],
     );
   }

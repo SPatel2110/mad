@@ -1,6 +1,10 @@
-import 'package:UrbanPark/features/work/screens/parking/widgets/searchpage.dart';
+import 'package:UrbanPark/features/work/screens/parking/widgets/selectslotspage.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart'; // Import Get for navigation
+import 'package:get/get.dart';
+import 'package:UrbanPark/features/work/screens/parking/widgets/searchpage.dart'; // Replace with correct import path for SearchPage // Import SelectSlotPage
+import '../../../../../common/widgets/custom_shapes/containers/primary_header_container.dart';
+import '../../../../../common/widgets/text/section_heading.dart';
+import '../../../../../utils/constants/sizes.dart';
 
 class SelectVehiclePage extends StatefulWidget {
   @override
@@ -75,6 +79,7 @@ class _SelectVehiclePageState extends State<SelectVehiclePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text('Select Vehicle'),
         leading: IconButton(
@@ -83,73 +88,117 @@ class _SelectVehiclePageState extends State<SelectVehiclePage> {
             Navigator.pop(context);
           },
         ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
-      body: Column(
-        children: [
-          // ToggleButtons for vehicle categories
-          ToggleButtons(
-            isSelected: [
-              _selectedCategoryIndex == 0,
-              _selectedCategoryIndex == 1,
-              _selectedCategoryIndex == 2,
-            ],
-            onPressed: (index) {
-              filterVehiclesByCategory(index);
-            },
-            borderRadius: BorderRadius.circular(8.0),
-            selectedColor: Colors.white,
-            fillColor: Theme.of(context).primaryColor,
-            color: Theme.of(context).primaryColor,
-            selectedBorderColor: Theme.of(context).primaryColor,
-            borderColor: Theme.of(context).primaryColor,
-            children: const [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text('Cars'),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            TPrimaryHeaderContainer(
+              child: Padding(
+                padding: const EdgeInsets.all(TSizes.defaultSpace),
+                child: Column(
+                  children: [
+                    const SizedBox(height: TSizes.spaceBtwSections),
+                    Text(
+                      'Select Your Vehicle',
+                      style: Theme.of(context).textTheme.headlineMedium!.apply(color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: TSizes.spaceBtwSections),
+                  ],
+                ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text('Bikes'),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text('Scooters'),
-              ),
-            ],
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: filteredVehicles.length + 1, // +1 for the "Add New Vehicle" button
-              itemBuilder: (context, index) {
-                if (index == filteredVehicles.length) {
-                  // Render "Add New Vehicle" button
-                  return ListTile(
-                    title: Text('Add New Vehicle'),
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AddVehicleDialog(
-                          onAddVehicle: addNewVehicle,
-                        ),
-                      );
-                    },
-                  );
-                } else {
-                  // Render vehicle list
-                  final vehicle = filteredVehicles[index];
-                  return ListTile(
-                    title: Text(vehicle.name),
-                    onTap: () {
-                      Get.to(() => SearchPage());
-                    },
-                  );
-                }
-              },
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(TSizes.defaultSpace),
+              child: Column(
+                children: [
+                  ToggleButtons(
+                    isSelected: [
+                      _selectedCategoryIndex == 0,
+                      _selectedCategoryIndex == 1,
+                      _selectedCategoryIndex == 2,
+                    ],
+                    onPressed: (index) {
+                      filterVehiclesByCategory(index);
+                    },
+                    borderRadius: BorderRadius.circular(8.0),
+                    selectedColor: Colors.white,
+                    fillColor: Theme.of(context).primaryColor,
+                    color: Theme.of(context).primaryColor,
+                    selectedBorderColor: Theme.of(context).primaryColor,
+                    borderColor: Theme.of(context).primaryColor,
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text('Cars'),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text('Bikes'),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text('Scooters'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: TSizes.spaceBtwSections),
+                  TSectionHeading(
+                    title: 'Available Vehicles',
+                  ),
+                  const SizedBox(height: TSizes.spaceBtwItems),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: filteredVehicles.length + 1, // +1 for the "Add New Vehicle" button
+                    itemBuilder: (context, index) {
+                      if (index == filteredVehicles.length) {
+                        // Render "Add New Vehicle" button
+                        return ListTile(
+                          title: Text('Add New Vehicle'),
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AddVehicleDialog(
+                                onAddVehicle: addNewVehicle,
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        // Render vehicle list
+                        final vehicle = filteredVehicles[index];
+                        return ListTile(
+                          title: Text(vehicle.name),
+                          onTap: () {
+                            _navigateToSearchPage(vehicle);
+                          },
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  void _navigateToSearchPage(Vehicle vehicle) async {
+    final result = await Get.to(() => SearchPage());
+
+    if (result != null && result is String) {
+      // Navigate to SelectSlotPage with selected vehicle and destination details
+      Get.to(() =>
+          SelectSlotPage(
+        selectedVehicle: '',
+        destinationName: result, bookedSlots: [],
+      ));
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../personalization/screens/settings/settings.dart';// Assuming the file exists and contains the SettingsScreen widget
+import '../../../../personalization/screens/settings/settings.dart'; // Assuming the file exists and contains the SettingsScreen widget
 
 class NotificationsPage extends StatefulWidget {
   @override
@@ -81,15 +81,33 @@ class _NotificationsPageState extends State<NotificationsPage> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: notifications.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(notifications[index].title),
-            subtitle: Text(notifications[index].subtitle),
-            trailing: Text(notifications[index].timeAgo),
-          );
-        },
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/home_background.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: ListView.builder(
+          itemCount: notifications.length,
+          itemBuilder: (context, index) {
+            return Card(
+              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              elevation: 4,
+              child: ListTile(
+                title: Text(
+                  notifications[index].title,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(notifications[index].subtitle),
+                trailing: Text(notifications[index].timeAgo),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

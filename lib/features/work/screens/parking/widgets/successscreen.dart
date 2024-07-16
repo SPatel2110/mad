@@ -10,34 +10,43 @@ class SuccessScreen extends StatelessWidget {
     Future.delayed(Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => TicketScreen()),
+        MaterialPageRoute(builder: (context) => TicketScreen(duration: '', vehicle: '',)),
       );
     });
 
     return Scaffold(
-      backgroundColor: Colors.blue,
       appBar: AppBar(
         title: Text('Payment Success'),
         automaticallyImplyLeading: false, // Disable back button
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.check_circle_outline, size: 100, color: Colors.white),
-            SizedBox(height: 20),
-            Text(
-              'Success!',
-              style: TextStyle(fontSize: 32, color: Colors.white),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Background image
+          Image.asset(
+            'assets/images/home_background.jpg',
+            fit: BoxFit.cover,
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.check_circle_outline, size: 100, color: Colors.white),
+                SizedBox(height: 20),
+                Text(
+                  'Success!',
+                  style: TextStyle(fontSize: 32, color: Colors.white),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Yay, 1 parking slot\nalready booked for you.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+              ],
             ),
-            SizedBox(height: 10),
-            Text(
-              'Yay, 1 parking slot\nalready booked for you.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, color: Colors.white),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

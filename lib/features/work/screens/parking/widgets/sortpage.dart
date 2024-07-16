@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'categoriespage.dart';
 import 'filterpage.dart';
+import 'searchpage.dart'; // Ensure to import your SearchPage file
+
+// Example list of slots available in different parts of the city
+List<int> slotsAvailable = [25, 15, 50];
 
 enum SortOption {
   Distance,
@@ -24,11 +27,11 @@ class _SortByPageState extends State<SortByPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Get.back(); // Navigate back to SearchResultsPage using GetX
+            Get.back(); // Navigate back to previous screen using GetX
           },
         ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -44,20 +47,19 @@ class _SortByPageState extends State<SortByPage> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Get.back(); // Navigate back to SearchResultsPage using GetX
+                Get.back(result: _sortOption); // Return selected sort option to previous screen using GetX
               },
               child: Text('Back to Search Results'),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Get.offAll(() => ExploreCategoriesPage()); // Navigate to ExploreCategoriesPage using GetX
-              },
-              child: Text('Back to Categories'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Get.to(() => FilterPage()); // Navigate to FilterPage using GetX
+                Get.to(() => FilterPage())?.then((value) {
+                  if (value != null) {
+                    // Return the filter options to previous screen using GetX
+                    Get.back(result: value);
+                  }
+                });
               },
               child: Text('Go to Filter Page'),
             ),
@@ -100,6 +102,12 @@ class _SortByPageState extends State<SortByPage> {
   void sortBySlotsAvailable() {
     // Implement sorting by slots available logic
     print('Sorting by Slots Available');
-    // Example: Call a function or set a flag for sorting by available slots
+    // Example: Sort slotsAvailable list based on slots available
+    slotsAvailable.sort((a, b) => a.compareTo(b));
+    // Update UI or perform additional logic based on sorted slotsAvailable list
+    print('Sorted Slots Available: $slotsAvailable');
+
+    // If you want to navigate back to SearchPage after sorting
+    Get.back(result: _sortOption);
   }
 }

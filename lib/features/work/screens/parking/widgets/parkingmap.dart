@@ -33,7 +33,7 @@ class ParkingMapPage extends StatelessWidget {
                   onTap: () {
                     Get.to(() => ParkingDetailPage(
                       title: 'Parking Location',
-                      details: 'Here are the available parking spots.',
+                      details: 'Here are the available parking spots.', destinationName: '', distance: '', availableSlots: 0,
                     )); // Navigate to ParkingDetailPage using GetX
                   },
                 ),

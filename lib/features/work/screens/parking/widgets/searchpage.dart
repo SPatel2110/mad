@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+
 import 'selectvehiclepage.dart'; // Replace with your VehiclePage import
-import 'sortpage.dart';
-import 'package:get/get.dart';
-// Import your ExploreCategoriesPage here
+import 'sortpage.dart'; // Import your SortPage here
+import 'parkingdetails.dart'; // Import your ParkingDetailPage here
+
+// Define a class for parking destinations
+class ParkingDestination {
+  final String name;
+  final LatLng location;
+  final String snippet;
+  final int availableSlots;
+
+  ParkingDestination({
+    required this.name,
+    required this.location,
+    required this.snippet,
+    required this.availableSlots,
+  });
+}
 
 class SearchPage extends StatefulWidget {
   @override
@@ -19,11 +35,34 @@ class _SearchPageState extends State<SearchPage> {
   stt.SpeechToText _speech = stt.SpeechToText();
   String _currentLocaleId = 'en_US'; // Default locale for speech to text
 
+  List<ParkingDestination> parkingDestinations = [
+    ParkingDestination(
+      name: 'Lalbagh West Gate Parking',
+      location: LatLng(12.9485, 77.5839),
+      snippet: 'Near Lalbagh Botanical Garden',
+      availableSlots: 25,
+    ),
+    ParkingDestination(
+      name: 'UB City Parking',
+      location: LatLng(12.9718, 77.5953),
+      snippet: 'Luxury shopping and dining destination',
+      availableSlots: 15,
+    ),
+    ParkingDestination(
+      name: 'Mantri Square Parking',
+      location: LatLng(12.9911, 77.5702),
+      snippet: 'Near Mantri Square Mall',
+      availableSlots: 50,
+    ),
+    // Add more parking destinations as needed
+  ];
+
   @override
   void initState() {
     super.initState();
     _getCurrentLocation();
     _initializeSpeech();
+    _updateMarkers();
   }
 
   void _initializeSpeech() async {
@@ -33,7 +72,7 @@ class _SearchPageState extends State<SearchPage> {
     );
     if (available) {
       // Set current locale if available
-      _currentLocaleId = (await _speech.systemLocale()) as String;
+      _currentLocaleId = (await _speech.systemLocale())?.localeId ?? 'en_US';
     } else {
       print('Speech recognition is not available');
     }
@@ -43,15 +82,38 @@ class _SearchPageState extends State<SearchPage> {
     var location = Location();
     try {
       currentLocation = await location.getLocation();
-      _updateMarkers();
     } catch (e) {
       print('Error getting location: $e');
     }
   }
 
   void _updateMarkers() {
-    setState(() {
-      // Add current location marker
+    markers.clear(); // Clear existing markers
+
+    // Add markers for each parking destination
+    parkingDestinations.forEach((destination) {
+      markers.add(
+        Marker(
+          markerId: MarkerId(destination.name),
+          position: destination.location,
+          infoWindow: InfoWindow(
+            title: destination.name,
+            snippet: destination.snippet,
+          ),
+          onTap: () {
+            // Navigate to ParkingDetailPage with destination details
+            Get.to(() => ParkingDetailPage(
+              destinationName: destination.name,
+              distance: _calculateDistance(destination.location),
+              availableSlots: destination.availableSlots,
+            ));
+          },
+        ),
+      );
+    });
+
+    // Add current location marker
+    if (currentLocation != null) {
       markers.add(
         Marker(
           markerId: MarkerId('currentLocation'),
@@ -61,59 +123,15 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
       );
+    }
 
-      // Add new parking destination markers in Bengaluru
-      markers.add(
-        Marker(
-          markerId: MarkerId('Lalbagh West Gate Parking'),
-          position: LatLng(12.9485, 77.5839),
-          infoWindow: InfoWindow(
-            title: 'Lalbagh West Gate Parking',
-            snippet: 'Near Lalbagh Botanical Garden',
-          ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SelectVehiclePage()),
-            );
-          },
-        ),
-      );
+    setState(() {});
+  }
 
-      markers.add(
-        Marker(
-          markerId: MarkerId('UB City Parking'),
-          position: LatLng(12.9718, 77.5953),
-          infoWindow: InfoWindow(
-            title: 'UB City Parking',
-            snippet: 'Luxury shopping and dining destination',
-          ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SelectVehiclePage()),
-            );
-          },
-        ),
-      );
-
-      markers.add(
-        Marker(
-          markerId: MarkerId('Mantri Square Parking'),
-          position: LatLng(12.9911, 77.5702),
-          infoWindow: InfoWindow(
-            title: 'Mantri Square Parking',
-            snippet: 'Near Mantri Square Mall',
-          ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SelectVehiclePage()),
-            );
-          },
-        ),
-      );
-    });
+  // Calculate distance from current location to a destination
+  String _calculateDistance(LatLng destination) {
+    // Replace with your distance calculation logic
+    return '1.2 km'; // Example distance
   }
 
   void _startListening() {
@@ -150,11 +168,15 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  void _navigateToExploreCategories() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SortByPage()),
-    );
+  void _navigateToSortPage() {
+    Get.to(() => SortByPage())?.then((value) {
+      if (value != null) {
+        // Handle the value returned from the SortPage
+        print('Sort applied: $value');
+        // Update markers based on sort results (not implemented here)
+        _updateMarkers();
+      }
+    });
   }
 
   @override
@@ -165,7 +187,7 @@ class _SearchPageState extends State<SearchPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context); // Navigate back to previous screen
           },
         ),
         actions: [
@@ -178,7 +200,7 @@ class _SearchPageState extends State<SearchPage> {
           IconButton(
             icon: Icon(Icons.explore),
             onPressed: () {
-              _navigateToExploreCategories(); // Navigate to ExploreCategoriesPage
+              _navigateToSortPage(); // Navigate to SortPage
             },
           ),
         ],
@@ -215,6 +237,14 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Get.off(() => SelectVehiclePage()); // Navigate to SelectVehiclePage and remove SearchPage from navigation stack
+        },
+        label: Text('Go Back'),
+        icon: Icon(Icons.arrow_back),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

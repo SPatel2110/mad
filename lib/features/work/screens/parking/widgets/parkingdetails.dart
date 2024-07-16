@@ -1,19 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:UrbanPark/features/work/screens/parking/widgets/selectslotspage.dart'; // Import SelectSlotPage
+import 'package:UrbanPark/features/work/screens/parking/widgets/selectslotspage.dart';
 
 class ParkingDetailPage extends StatefulWidget {
   final String? title;
   final String? details;
+  final String destinationName;
+  final String distance;
+  final int availableSlots;
 
-  const ParkingDetailPage({super.key, this.title, this.details});
+  const ParkingDetailPage({
+    Key? key,
+    this.title,
+    this.details,
+    required this.destinationName,
+    required this.distance,
+    required this.availableSlots,
+  }) : super(key: key);
+
   @override
   _ParkingDetailPageState createState() => _ParkingDetailPageState();
 }
 
 class _ParkingDetailPageState extends State<ParkingDetailPage> {
-  int _slotsAvailable = 39; // Initial value, replace with actual fetched value
-  final List<String> availableSlots = ['A1', 'A2', 'B1', 'B2', 'C1']; // Example slots
+  late int _slotsAvailable; // Updated slot count
+
+  @override
+  void initState() {
+    super.initState();
+    _slotsAvailable = widget.availableSlots; // Initialize with provided available slots
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,65 +48,45 @@ class _ParkingDetailPageState extends State<ParkingDetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'PARKING DETAIL',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
+            // Replace with your image widget
             Image.network(
-              'https://via.placeholder.com/600x200', // Replace with your image URL
+              'https://via.placeholder.com/600x200',
               fit: BoxFit.cover,
             ),
             SizedBox(height: 10),
-            const Text(
-              'Parking Lot of Capital University',
+            Text(
+              widget.destinationName,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            Text('1514 Robin St, Auburndale'),
-            const Row(
+            Text(widget.details ?? 'Details not available'), // Show placeholder if details are null
+            Row(
               children: [
                 Icon(Icons.map),
-                Text('10 km²'),
-                SizedBox(width: 10),
-                Icon(Icons.access_time),
-                Text('8 AM - 9 PM'),
+                Text('${widget.distance} km'),
                 SizedBox(width: 10),
                 Icon(Icons.local_parking),
-                Text('Valet'),
+                Text('Available Slots: $_slotsAvailable'),
               ],
             ),
             SizedBox(height: 10),
-            const Text(
-              'RULES',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const Text(
-              'These rules and regulations for the use of Dummy University Parking Area. In these Rules, unless the context otherwise requires more...',
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    Text('Slots Available: $_slotsAvailable'),
-                    const Text('25.00 rupees per hour'),
-                  ],
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Get.to(() => SelectSlotPage(availableSlots: availableSlots, bookedSlots: [],)); // Navigate to SelectSlotPage with available slots
-                  },
-                  child: Text('Book Parking'),
-                ),
-              ],
+            ElevatedButton(
+              onPressed: () {
+                Get.to(() => SelectSlotPage(
+                  availableSlots: const ['A1', 'A2', 'B1', 'B2', 'C1'],
+                  bookedSlots: [], selectedVehicle: '', destinationName: '',
+                ));
+              },
+              child: Text('Book Parking'),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                _updateSlotsFromAPI(); // Update slots from API
+                _updateSlotsFromAPI();
               },
               child: Text('Update Slots'),
             ),
@@ -110,7 +106,6 @@ class _ParkingDetailPageState extends State<ParkingDetailPage> {
     });
   }
 
-  // Replace with actual API integration logic
   int _getUpdatedSlotCount() {
     // Example: Replace with actual API call to get updated slot count
     return 32; // Simulated updated value

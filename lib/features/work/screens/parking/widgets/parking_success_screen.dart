@@ -7,34 +7,44 @@ class ParkingSuccessScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.check_circle_outline, size: 100, color: Colors.white),
-            SizedBox(height: 20),
-            Text(
-              'Success!',
-              style: TextStyle(fontSize: 32, color: Colors.white),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Background image
+          Image.asset(
+            'assets/images/home_background.jpg',
+            fit: BoxFit.cover,
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.check_circle_outline, size: 100, color: Colors.white),
+                SizedBox(height: 20),
+                Text(
+                  'Success!',
+                  style: TextStyle(fontSize: 32, color: Colors.white),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Your vehicle is parked,\nthe time will be counted down.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                          (Route<dynamic> route) => false,
+                    );
+                  },
+                  child: Text('Back to Home'),
+                ),
+              ],
             ),
-            SizedBox(height: 10),
-            Text(
-              'Your vehicle is parked,\nthe time will be counted down.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, color: Colors.white),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                      (Route<dynamic> route) => false,
-                );
-              },
-              child: Text('Back to Home'),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
