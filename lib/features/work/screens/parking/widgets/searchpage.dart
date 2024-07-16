@@ -3,7 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'selectvehiclepage.dart'; // Replace with your VehiclePage import
-import 'categoriespage.dart';
+import 'sortpage.dart';
 import 'package:get/get.dart';
 // Import your ExploreCategoriesPage here
 
@@ -153,7 +153,7 @@ class _SearchPageState extends State<SearchPage> {
   void _navigateToExploreCategories() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ExploreCategoriesPage()),
+      MaterialPageRoute(builder: (context) => SortByPage()),
     );
   }
 

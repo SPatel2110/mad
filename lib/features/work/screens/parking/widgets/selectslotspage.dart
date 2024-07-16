@@ -78,21 +78,23 @@ class _SelectSlotPageState extends State<SelectSlotPage> {
                     ),
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: widget.availableSlots?.length ?? 0,
+                    itemCount: widget.availableSlots?.length?? 0,
                     itemBuilder: (context, index) {
                       final slot = widget.availableSlots?[index];
                       final isBooked = bookedSlots.contains(slot);
 
                       return GestureDetector(
-                        onTap: isBooked ? null : () {
+                        onTap: isBooked? null : () {
                           setState(() {
                             selectedSlot = slot;
                           });
                           _handleSlotSelection(slot!, context);
                         },
                         child: Container(
+                          width: 100,
+                          height: 50,
                           decoration: BoxDecoration(
-                            color: isBooked ? Colors.redAccent : Colors.white,
+                            color: isBooked? Colors.redAccent : Colors.white,
                             borderRadius: BorderRadius.circular(8),
                             boxShadow: [
                               BoxShadow(
@@ -102,37 +104,18 @@ class _SelectSlotPageState extends State<SelectSlotPage> {
                               ),
                             ],
                             border: Border.all(
-                              color: selectedSlot == slot ? Colors.blue : Colors.transparent,
+                              color: selectedSlot == slot? Colors.blue : Colors.transparent,
                               width: 2,
                             ),
                           ),
                           child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // Display car icon if slot is booked
-                                if (isBooked)
-                                  Icon(
-                                    Icons.directions_car,
-                                    color: Colors.red,
-                                  )
-                                // Display slot number if slot is available
-                                else
-                                  Text(
-                                    slot!,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                // Display check icon if slot is selected
-                                if (selectedSlot == slot)
-                                  Icon(
-                                    Icons.check_box,
-                                    color: Colors.blue,
-                                  ),
-                              ],
+                            child: Text(
+                              slot!,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ),
@@ -141,7 +124,7 @@ class _SelectSlotPageState extends State<SelectSlotPage> {
                   ),
                   const SizedBox(height: TSizes.spaceBtwItems),
                   ElevatedButton(
-                    onPressed: selectedSlot == null ? null : () {
+                    onPressed: selectedSlot == null? null : () {
                       _handleSlotSelection(selectedSlot!, context);
                     },
                     child: Text('Continue'),

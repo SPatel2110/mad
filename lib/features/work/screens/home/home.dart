@@ -1,3 +1,4 @@
+import 'package:UrbanPark/features/work/screens/parking/widgets/selectvehiclepage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -79,15 +80,15 @@ class HomeScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => OnboardingScreen()),
+                        MaterialPageRoute(builder: (context) => SelectVehiclePage()),
                       );
                     },
                   ),
                   const SizedBox(height: TSizes.spaceBtwItems),
                   /// Grid
                   TGridLayout(
-                    itemCount: 4,
-                    itemBuilder: (_, index) => OnboardingScreen(),
+                    itemCount: 1,
+                    itemBuilder: (_, index) => SelectVehiclePage(),
                   ),
                 ],
               ),

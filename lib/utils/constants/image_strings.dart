@@ -46,19 +46,20 @@ class TImages {
   static const String successRegistration = "assets/images/animations/72462-check-register.json";
 
   // -- OnBoarding Texts
-  static const String onBoardingImage1 = "C:\Users\Shashank\OneDrive\Documents\GitHub\mad\assets\images\on_boarding_images\img.gif";
-  static const String onBoardingImage2 = "assets/images/on_boarding_images/interview-2.gif";
-  static const String onBoardingImage3 = "assets/images/on_boarding_images/interview-3.gif";
+  static const String onBoardingImage1 = "assets/images/on_boarding_images/parking1.jpeg";
+  static const String onBoardingImage2 = "assets/images/on_boarding_images/parking2.jpeg";
+  static const String onBoardingImage3 = "assets/images/on_boarding_images/parking3.jpeg";
+
 
 
 
 
 
   //Banners
-  static const String promoBanner1 = "assets/images/products/promo-1.jpg";
-  static const String promoBanner2 = "assets/images/products/promo-2.jpg";
-  static const String promoBanner3 = "assets/images/products/promo-3.jpg";
-  static const String promoBanner4 = "assets/images/products/promo-4.jpg";
+  static const String promoBanner1 = "assets/images/banners/istockphoto-1349223345-612x612.jpeg";
+  static const String promoBanner2 = "assets/images/banners/istockphoto-519196006-1024x1024.jpeg";
+  static const String promoBanner3 = "assets/images/banners/GCC-Smart-Parking-System.jpeg";
+  static const String promoBanner4 = "assets/images/banners/3-1-1536x1152.jpeg";
 
 
   //Profile
