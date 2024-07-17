@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
-import 'package:speech_to_text/speech_to_text.dart' as stt; // Import DirectionScreen1
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'directscreen1.dart';
-import 'selectvehiclepage.dart'; // Replace with your VehiclePage import
-import 'sortpage.dart'; // Import your SortPage here
-import 'parkingdetails.dart'; // Import your ParkingDetailPage here
+import 'selectvehiclepage.dart';
+import 'sortpage.dart';
+import 'parkingdetails.dart';
 
-// Define a class for parking destinations
 class ParkingDestination {
   final String name;
   final LatLng location;
@@ -29,13 +29,12 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late GoogleMapController mapController;
   LocationData? currentLocation;
-  Set<Marker> markers = {};
-  stt.SpeechToText _speech = stt.SpeechToText();
-  String _currentLocaleId = 'en_US'; // Default locale for speech to text
+  List<Marker> markers = [];
+  final stt.SpeechToText _speech = stt.SpeechToText();
+  String _currentLocaleId = 'en_US';
 
-  List<ParkingDestination> parkingDestinations = [
+  final List<ParkingDestination> parkingDestinations = [
     ParkingDestination(
       name: 'Lalbagh West Gate Parking',
       location: LatLng(12.9485, 77.5839),
@@ -51,10 +50,9 @@ class _SearchPageState extends State<SearchPage> {
     ParkingDestination(
       name: 'Mantri Square Parking',
       location: LatLng(12.9911, 77.5702),
-      snippet: 'Near Mantr i Square Mall',
+      snippet: 'Near Mantri Square Mall',
       availableSlots: 50,
     ),
-    // Add more parking destinations as needed
   ];
 
   @override
@@ -62,7 +60,6 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
     _getCurrentLocation();
     _initializeSpeech();
-    _updateMarkers();
   }
 
   void _initializeSpeech() async {
@@ -71,7 +68,6 @@ class _SearchPageState extends State<SearchPage> {
       onError: (error) => print('Speech error: $error'),
     );
     if (available) {
-      // Set current locale if available
       _currentLocaleId = (await _speech.systemLocale())?.localeId ?? 'en_US';
     } else {
       print('Speech recognition is not available');
@@ -82,46 +78,36 @@ class _SearchPageState extends State<SearchPage> {
     var location = Location();
     try {
       currentLocation = await location.getLocation();
+      setState(() {
+        _updateMarkers();
+      });
     } catch (e) {
       print('Error getting location: $e');
     }
   }
 
   void _updateMarkers() {
-    markers.clear(); // Clear existing markers
+    markers.clear();
 
-    // Add markers for each parking destination
-    parkingDestinations.forEach((destination) {
+    for (var destination in parkingDestinations) {
       markers.add(
         Marker(
-          markerId: MarkerId(destination.name),
-          position: destination.location,
-          infoWindow: InfoWindow(
-            title: destination.name,
-            snippet: destination.snippet,
+          point: destination.location,
+          builder: (ctx) => GestureDetector(
+            onTap: () {
+              Get.to(() => DirectionScreen1(destination: destination.location));
+            },
+            child: Icon(Icons.location_on, color: Colors.red, size: 40),
           ),
-          onTap: () {
-            // Navigate to DirectionScreen1 with destination details
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DirectionScreen1(destination: destination.location),
-              ),
-            );
-          },
         ),
       );
-    });
+    }
 
-    // Add current location marker
     if (currentLocation != null) {
       markers.add(
         Marker(
-          markerId: MarkerId('currentLocation'),
-          position: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
-          infoWindow: InfoWindow(
-            title: 'You are here',
-          ),
+          point: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+          builder: (ctx) => Icon(Icons.my_location, color: Colors.blue, size: 40),
         ),
       );
     }
@@ -129,17 +115,10 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {});
   }
 
-  // Calculate distance from current location to a destination
-  String _calculateDistance(LatLng destination) {
-    // Replace with your distance calculation logic
-    return '1.2 km'; // Example distance
-  }
-
   void _startListening() {
     _speech.listen(
       onResult: (result) {
         if (result.finalResult) {
-          // Handle the recognized result here (e.g., search for location)
           print('Recognized text: ${result.recognizedWords}');
           _searchLocation(result.recognizedWords);
         }
@@ -149,11 +128,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void _searchLocation(String query) {
-    // Perform search logic here (not implemented in this example)
-    // For demo, we can just print the query
     print('Searching for: $query');
-    // Update map with search results if applicable
-    // For now, we just show an alert dialog for demo purposes
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -172,9 +147,7 @@ class _SearchPageState extends State<SearchPage> {
   void _navigateToSortPage() {
     Get.to(() => SortByPage())?.then((value) {
       if (value != null) {
-        // Handle the value returned from the SortPage
         print('Sort applied: $value');
-        // Update markers based on sort results (not implemented here)
         _updateMarkers();
       }
     });
@@ -188,37 +161,36 @@ class _SearchPageState extends State<SearchPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Navigate back to previous screen
+            Navigator.pop(context);
           },
         ),
         actions: [
           IconButton(
             icon: Icon(Icons.mic),
-            onPressed: () {
-              _startListening();
-            },
+            onPressed: _startListening,
           ),
           IconButton(
             icon: Icon(Icons.explore),
-            onPressed: () {
-              _navigateToSortPage(); // Navigate to SortPage
-            },
+            onPressed: _navigateToSortPage,
           ),
         ],
       ),
       body: Stack(
         children: [
-          GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: LatLng(currentLocation?.latitude ?? 12.9716, currentLocation?.longitude ?? 77.5946), // Default to Bengaluru
-              zoom: 14,
+          FlutterMap(
+            options: MapOptions(
+              center: LatLng(currentLocation?.latitude ?? 12.9716, currentLocation?.longitude ?? 77.5946),
+              zoom: 14.0,
             ),
-            onMapCreated: (controller) {
-              setState(() {
-                mapController = controller;
-              });
-            },
-            markers: markers,
+            layers: [
+              TileLayerOptions(
+                urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                subdomains: ['a', 'b', 'c'],
+              ),
+              MarkerLayerOptions(
+                markers: markers,
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -240,7 +212,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Get.off(() => SelectVehiclePage()); // Navigate to SelectVehiclePage and remove SearchPage from navigation stack
+          Get.off(() => SelectVehiclePage());
         },
         label: Text('Go Back'),
         icon: Icon(Icons.arrow_back),

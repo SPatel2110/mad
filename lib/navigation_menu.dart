@@ -11,7 +11,6 @@ import 'package:UrbanPark/utils/helpers/helper_functions.dart';
 import 'features/personalization/screens/settings/settings.dart';
 // ignore: unused_import
 import 'features/work/screens/home/home.dart';
-import 'features/work/screens/parking/widgets/onboarding_screen.dart';
 import 'features/work/screens/parking/widgets/notifications_page.dart';
 import 'features/work/screens/parking/widgets/searchresults.dart';
 

@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="QuickPrep"
+        android:label="UrbanPark"
         android:name="${applicationName}"
         android:icon="@mipmap/n_logo_dark">
         <activity

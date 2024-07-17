@@ -1,7 +1,8 @@
-import 'package:UrbanPark/features/work/screens/parking/widgets/parkingdetails.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
+import 'parkingdetails.dart';
 
 class ParkingMapPage extends StatelessWidget {
   @override
@@ -18,31 +19,39 @@ class ParkingMapPage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: LatLng(37.42796133580664, -122.085749655962),
+          FlutterMap(
+            options: MapOptions(
+              center: LatLng(37.42796133580664, -122.085749655962),
               zoom: 14,
             ),
-            markers: {
-              Marker(
-                markerId: MarkerId('marker_1'),
-                position: LatLng(37.42796133580664, -122.085749655962),
-                infoWindow: InfoWindow(
-                  title: 'Parking Location',
-                  snippet: 'Available parking spots',
-                  onTap: () {
-                    Get.to(() => ParkingDetailPage(
-                      title: 'Parking Location',
-                      details: 'Here are the available parking spots.', destinationName: '', distance: '', availableSlots: 0,
-                    )); // Navigate to ParkingDetailPage using GetX
-                  },
-                ),
+            layers: [
+              TileLayerOptions(
+                urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                subdomains: ['a', 'b', 'c'],
               ),
-              // Add more markers as needed
-            },
-            onMapCreated: (GoogleMapController controller) {
-              // You can manipulate the map here
-            },
+              MarkerLayerOptions(
+                markers: [
+                  Marker(
+                    width: 80.0,
+                    height: 80.0,
+                    point: LatLng(37.42796133580664, -122.085749655962),
+                    builder: (ctx) => GestureDetector(
+                      onTap: () {
+                        Get.to(() => ParkingDetailPage(
+                          title: 'Parking Location',
+                          details: 'Here are the available parking spots.',
+                          destinationName: 'Parking Location',
+                          distance: '500m',
+                          availableSlots: 20,
+                        ));
+                      },
+                      child: Icon(Icons.location_on, color: Colors.red, size: 40),
+                    ),
+                  ),
+                  // Add more markers as needed
+                ],
+              ),
+            ],
           ),
           Positioned(
             top: 50,
@@ -82,4 +91,3 @@ class ParkingMapPage extends StatelessWidget {
     );
   }
 }
-

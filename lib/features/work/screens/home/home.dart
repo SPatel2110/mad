@@ -11,7 +11,6 @@ import '../../../../common/widgets/text/section_heading.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../personalization/controllers/user_controller.dart';
-import '../parking/widgets/onboarding_screen.dart';
 import 'widgets/home_appbar.dart';
 
 class HomeScreen extends StatelessWidget {

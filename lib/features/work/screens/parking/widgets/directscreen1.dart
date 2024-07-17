@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart'; // Import Location package
 import 'parking_success_screen.dart';
-
 class DirectionScreen1 extends StatefulWidget {
   final LatLng? destination;
 
@@ -14,10 +14,9 @@ class DirectionScreen1 extends StatefulWidget {
 }
 
 class _DirectionScreen1State extends State<DirectionScreen1> {
-  GoogleMapController? mapController;
   Location location = Location();
   LocationData? currentLocation;
-  Set<Marker> markers = {};
+  List<Marker> markers = [];
 
   @override
   void initState() {
@@ -33,11 +32,12 @@ class _DirectionScreen1State extends State<DirectionScreen1> {
   void updateMarkers() {
     markers.clear();
     if (currentLocation != null) {
-      markers.add(Marker(
-        markerId: MarkerId('destination'),
-        position: widget.destination!,
-        infoWindow: InfoWindow(title: 'Destination'),
-      ));
+      markers.add(
+        Marker(
+          point: widget.destination!,
+          builder: (ctx) => Icon(Icons.location_on, color: Colors.red, size: 40),
+        ),
+      );
 
       // Calculate distance or use geofencing logic here to determine arrival
       double distanceInMeters = calculateDistance(currentLocation!.latitude!, currentLocation!.longitude!, widget.destination!.latitude, widget.destination!.longitude);
@@ -47,6 +47,17 @@ class _DirectionScreen1State extends State<DirectionScreen1> {
         navigateToParkingSuccessScreen();
       }
     }
+
+    if (currentLocation != null) {
+      markers.add(
+        Marker(
+          point: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+          builder: (ctx) => Icon(Icons.my_location, color: Colors.blue, size: 40),
+        ),
+      );
+    }
+
+    setState(() {});
   }
 
   double calculateDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {
@@ -77,15 +88,20 @@ class _DirectionScreen1State extends State<DirectionScreen1> {
       backgroundColor: Colors.blue,
       body: Stack(
         children: [
-          GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: widget.destination!,
-              zoom: 15,
+          FlutterMap(
+            options: MapOptions(
+              center: widget.destination!,
+              zoom: 15.0,
             ),
-            markers: markers,
-            onMapCreated: (GoogleMapController controller) {
-              mapController = controller;
-            },
+            children: [
+              TileLayer(
+                urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                subdomains: ['a', 'b', 'c'],
+              ),
+              MarkerLayer(
+                markers: markers,
+              ),
+            ],
           ),
           Center(
             child: Column(
