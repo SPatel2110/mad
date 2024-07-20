@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -30,7 +29,6 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   LocationData? currentLocation;
-  List<Marker> markers = [];
   final stt.SpeechToText _speech = stt.SpeechToText();
   String _currentLocaleId = 'en_US';
 
@@ -78,41 +76,10 @@ class _SearchPageState extends State<SearchPage> {
     var location = Location();
     try {
       currentLocation = await location.getLocation();
-      setState(() {
-        _updateMarkers();
-      });
+      setState(() {});
     } catch (e) {
       print('Error getting location: $e');
     }
-  }
-
-  void _updateMarkers() {
-    markers.clear();
-
-    for (var destination in parkingDestinations) {
-      markers.add(
-        Marker(
-          point: destination.location,
-          builder: (ctx) => GestureDetector(
-            onTap: () {
-              Get.to(() => DirectionScreen1(destination: destination.location));
-            },
-            child: Icon(Icons.location_on, color: Colors.red, size: 40),
-          ),
-        ),
-      );
-    }
-
-    if (currentLocation != null) {
-      markers.add(
-        Marker(
-          point: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
-          builder: (ctx) => Icon(Icons.my_location, color: Colors.blue, size: 40),
-        ),
-      );
-    }
-
-    setState(() {});
   }
 
   void _startListening() {
@@ -148,7 +115,6 @@ class _SearchPageState extends State<SearchPage> {
     Get.to(() => SortByPage())?.then((value) {
       if (value != null) {
         print('Sort applied: $value');
-        _updateMarkers();
       }
     });
   }
@@ -177,20 +143,23 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Stack(
         children: [
-          FlutterMap(
-            options: MapOptions(
-              center: LatLng(currentLocation?.latitude ?? 12.9716, currentLocation?.longitude ?? 77.5946),
-              zoom: 14.0,
+          GestureDetector(
+            onTap: () {
+              // Navigate to ParkingDetailPage
+              Get.to(() => ParkingDetailPage(
+                title: 'Selected Parking',
+                distance: '2.5 km',
+                availableSlots: 30, destinationName: 'gandhi bazar',
+              ));
+            },
+            child: Center(
+              child: Image.asset(
+                'assets/images/content/map.jpg',
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+              ),
             ),
-            layers: [
-              TileLayerOptions(
-                urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                subdomains: ['a', 'b', 'c'],
-              ),
-              MarkerLayerOptions(
-                markers: markers,
-              ),
-            ],
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
